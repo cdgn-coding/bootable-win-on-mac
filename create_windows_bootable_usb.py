@@ -165,12 +165,20 @@ def select_language():
     except Exception:
         return 'es'  # Default to Spanish if any error occurs
 
+def get_absolute_path(path):
+    """Convert relative path to absolute path"""
+    if os.path.isabs(path):
+        return path
+    return os.path.abspath(os.path.expanduser(path))
+
 def get_user_inputs(lang):
     print(get_message('title', lang))
     
     # Get ISO path
     while True:
         iso_path = input(get_message('enter_iso', lang)).strip()
+        # Convert to absolute path and expand user directory (~)
+        iso_path = get_absolute_path(iso_path)
         if os.path.exists(iso_path):
             break
         print(get_message('iso_not_found', lang))
